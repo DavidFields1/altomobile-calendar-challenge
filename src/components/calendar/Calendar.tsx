@@ -1,5 +1,4 @@
-// import { useContext } from "react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { CalendarContext } from "../../context/CalendarContext";
 import { CalendarDaysHeader } from "./CalendarDaysHeader";
 import { CalendarNav } from "./CalendarNav";

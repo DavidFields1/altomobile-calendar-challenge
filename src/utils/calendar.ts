@@ -1,26 +1,3 @@
-import { DAYS } from "../data/index";
-// export const generateDate = (
-//     month = new Date().getMonth() + 1,
-//     year = new Date().getFullYear()
-// ) => {
-//     console.log("month", month);
-//     console.log("year", year);
-
-//     const firstMonthDay = new Date(year, month - 1, 1);
-//     console.log("first day of month", DAYS[firstMonthDay.getDay()]);
-//     console.log(
-//         "last day of month",
-//         DAYS[
-//             new Date(
-//                 year,
-//                 month - 1,
-//                 new Date(year, month, 0).getDate()
-//             ).getDay()
-//         ]
-//     );
-//     console.log("current day", new Date().getDate());
-// };
-
 export const getMonthInfo = (date: Date) => {
     return {
         currentDay: new Date(),
@@ -45,21 +22,15 @@ export const getMonthInfo = (date: Date) => {
 };
 
 export const getWeeksInMonth = (date: Date) => {
-    const currentDate = new Date();
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const weeks = [];
     let currentWeek = [];
 
     for (let i = 0; i < firstDay.getDay(); i++) {
-        // currentWeek.unshift(
-        //     new Date(
-        //         currentDate.getFullYear(),
-        //         currentDate.getMonth() - 1,
-        //         i == 0 ? i : -i
-        //     )
-        // );
-        currentWeek.push(null);
+        currentWeek.unshift(
+            new Date(date.getFullYear(), date.getMonth(), i == 0 ? i : -i)
+        );
     }
 
     for (let i = 1; i <= lastDay.getDate(); i++) {
@@ -70,8 +41,12 @@ export const getWeeksInMonth = (date: Date) => {
         currentWeek.push(new Date(date.getFullYear(), date.getMonth(), i));
     }
 
+    let j = 0;
     while (currentWeek.length < 7) {
-        currentWeek.push(null);
+        currentWeek.push(
+            new Date(date.getFullYear(), date.getMonth() + 2, j + 1)
+        );
+        j++;
     }
     weeks.push(currentWeek);
 

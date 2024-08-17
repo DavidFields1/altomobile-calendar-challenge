@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
+import { CalendarContext } from "../../context/CalendarContext";
 
 interface DayCellProps {
-    date: Date | null;
+    date: Date;
 }
 
 export const Cell: React.FC<DayCellProps> = ({ date }) => {
-    if (!date) {
+    const { currentMonth } = useContext(CalendarContext);
+
+    if (date.getMonth() + 1 != currentMonth) {
         return (
             <div className="bg-gray-300 basis-1/7 h-28 border border-solid p-2 select-none">
-                {}
+                {date.getDate()}
             </div>
         );
     }

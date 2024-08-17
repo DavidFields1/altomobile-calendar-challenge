@@ -2,7 +2,6 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { getMonthInfo, getWeeksInMonth } from "../utils/calendar";
 
 interface CalendarContextType {
-    // date: Date;
     currentDay: Date;
     currentMonth: number;
     currentYear: number;
