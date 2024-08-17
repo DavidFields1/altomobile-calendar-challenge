@@ -2,9 +2,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { CalendarApp } from "./CalendarApp.tsx";
 import "./index.css";
+import { CalendarProvider } from "./context/CalendarContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
-        <CalendarApp />
+        <CalendarProvider>
+            <CalendarApp />
+        </CalendarProvider>
     </StrictMode>
 );

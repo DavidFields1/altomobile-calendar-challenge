@@ -1,8 +1,8 @@
-import { Calendar } from "../components/Calendar";
-import { generateDate } from "../utils/calendar";
+import { Calendar } from "../components/calendar/Calendar";
+// import { generateDate } from "../utils/calendar";
 
 export const MainView = () => {
-    generateDate();
+    // generateDate();
 
     return (
         <div className="bg-gray-200 h-screen w-screen flex justify-center p-16">

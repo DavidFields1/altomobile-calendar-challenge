@@ -1,5 +1,5 @@
 import React from "react";
-import { WeekView } from "./WeekView";
+import { WeekRow } from "./WeekRow";
 
 interface MonthViewProps {
     currentDate: Date;
@@ -37,7 +37,7 @@ export const MonthView: React.FC<MonthViewProps> = ({ currentDate }) => {
     return (
         <div className="month-view">
             {weeks.map((week, index) => (
-                <WeekView key={index} week={week} />
+                <WeekRow key={index} week={week} />
             ))}
         </div>
     );
