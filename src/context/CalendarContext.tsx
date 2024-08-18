@@ -8,9 +8,10 @@ interface CalendarContextType {
     monthDays: number;
     firstDayMonth: number;
     lastDayMonth: number;
-    weeks: (Date | null)[][];
+    weeks: Date[][];
     prevMonth: () => void;
     nextMonth: () => void;
+    backToCurrentMonth: () => void;
 }
 
 export const CalendarContext = createContext<CalendarContextType>(
@@ -35,6 +36,10 @@ export const CalendarProvider = ({ children }: { children: ReactNode }) => {
         setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1));
     };
 
+    const backToCurrentMonth = () => {
+        setDate(new Date());
+    };
+
     return (
         <CalendarContext.Provider
             value={{
@@ -42,6 +47,7 @@ export const CalendarProvider = ({ children }: { children: ReactNode }) => {
                 weeks,
                 prevMonth,
                 nextMonth,
+                backToCurrentMonth,
             }}
         >
             {children}

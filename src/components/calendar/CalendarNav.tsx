@@ -4,8 +4,13 @@ import { OutlinedButton } from "../common/Button";
 import { MONTHS } from "../../data/index";
 
 export const CalendarNav = () => {
-    const { currentMonth, currentYear, prevMonth, nextMonth } =
-        useContext(CalendarContext);
+    const {
+        currentMonth,
+        currentYear,
+        prevMonth,
+        nextMonth,
+        backToCurrentMonth,
+    } = useContext(CalendarContext);
 
     return (
         <div className="flex justify-around p-8 items-center">
@@ -15,10 +20,17 @@ export const CalendarNav = () => {
                 </OutlinedButton>
             </div>
 
-            <div className="font-bold text-xl">
+            <div className="font-bold text-xl text-center">
                 <h1>
                     {MONTHS[currentMonth - 1]}, {currentYear}
                 </h1>
+                {currentMonth != new Date().getMonth() + 1 ? (
+                    <button onClick={backToCurrentMonth}>
+                        <p className="text-sm font-thin underline">
+                            Back to current month
+                        </p>
+                    </button>
+                ) : null}
             </div>
 
             <div>

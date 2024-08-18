@@ -52,3 +52,21 @@ export const getWeeksInMonth = (date: Date) => {
 
     return weeks;
 };
+
+export const isToday = (date: Date) => {
+    const today = new Date();
+    return (
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+    );
+};
+
+export const showPrompt = (date: Date) => {
+    const newAppointmentDescription = window.prompt(
+        `Description for the appointment at: ${date.toLocaleString("default", {
+            dateStyle: "medium",
+        })}`
+    );
+    return newAppointmentDescription;
+};
