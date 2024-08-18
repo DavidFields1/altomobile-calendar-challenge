@@ -6,7 +6,7 @@ export interface Appointment {
     name: string;
 }
 
-const STORAGE_KEY = "appointments";
+const STORAGE_KEY = "APPOINTMENTS";
 
 const getAppointments = (): Appointment[] => {
     const storedAppointments = localStorage.getItem(STORAGE_KEY);
@@ -37,14 +37,11 @@ export const createAppointment = (date: Date, name: string): Appointment => {
 
 export const getAppointmentsByDate = (date: Date): Appointment[] => {
     const appointments = getAppointments();
+
     const returnApp = appointments.filter((appointment) => {
         return appointment.date.toDateString() === date.toDateString();
     });
     return returnApp;
-};
-
-export const getAllAppointments = (): Appointment[] => {
-    return getAppointments();
 };
 
 export const deleteAppointment = (id: string): boolean => {
@@ -57,4 +54,19 @@ export const deleteAppointment = (id: string): boolean => {
         return true;
     }
     return false;
+};
+
+export const getSelectedDate = () => {
+    const selectedMonth = localStorage.getItem("SELECTED_MONTH");
+    const selectedYear = localStorage.getItem("SELECTED_YEAR");
+
+    if (selectedMonth && selectedYear) {
+        return new Date(parseInt(selectedYear), parseInt(selectedMonth) - 1);
+    }
+    return undefined;
+};
+
+export const setSelectedDate = (date: Date) => {
+    localStorage.setItem("SELECTED_MONTH", JSON.stringify(date.getMonth() + 1));
+    localStorage.setItem("SELECTED_YEAR", JSON.stringify(date.getFullYear()));
 };

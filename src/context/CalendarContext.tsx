@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { getMonthInfo, getWeeksInMonth } from "../utils/calendar";
+import { getSelectedDate, setSelectedDate } from "../api/appointments";
 
 interface CalendarContextType {
     currentDay: Date;
@@ -19,7 +20,11 @@ export const CalendarContext = createContext<CalendarContextType>(
 );
 
 export const CalendarProvider = ({ children }: { children: ReactNode }) => {
-    const [date, setDate] = useState(new Date());
+    const [dateFromStorage, setDateFromStorage] = useState(getSelectedDate());
+
+    const [date, setDate] = useState(
+        dateFromStorage ? dateFromStorage : new Date()
+    );
     const [calendarState, setCalendarState] = useState(getMonthInfo(date));
     const [weeks, setWeeks] = useState(getWeeksInMonth(date));
 
@@ -29,15 +34,21 @@ export const CalendarProvider = ({ children }: { children: ReactNode }) => {
     }, [date]);
 
     const prevMonth = () => {
-        setDate(new Date(date.getFullYear(), date.getMonth() - 1));
+        const newDate = new Date(date.getFullYear(), date.getMonth() - 1);
+        setDate(newDate);
+        setSelectedDate(newDate);
     };
 
     const nextMonth = () => {
-        setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1));
+        const newDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+        setDate(newDate);
+        setSelectedDate(newDate);
     };
 
     const backToCurrentMonth = () => {
-        setDate(new Date());
+        const newDate = new Date();
+        setDate(newDate);
+        setSelectedDate(newDate);
     };
 
     return (
