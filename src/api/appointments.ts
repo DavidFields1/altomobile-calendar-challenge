@@ -23,9 +23,13 @@ const saveAppointments = (appointments: Appointment[]): void => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(appointments));
 };
 
-export const createAppointment = (date: Date, name: string): Appointment => {
+export const createAppointment = (
+    date: Date,
+    name: string,
+    id: string = ""
+): Appointment => {
     const newAppointment: Appointment = {
-        id: uuidv4(),
+        id: id ? id : uuidv4(),
         date,
         name,
     };
@@ -39,8 +43,9 @@ export const getAppointmentsByDate = (date: Date): Appointment[] => {
     const appointments = getAppointments();
 
     const returnApp = appointments.filter((appointment) => {
-        return appointment.date.toDateString() === date.toDateString();
+        return appointment.date.getMonth() === date.getMonth();
     });
+
     return returnApp;
 };
 
@@ -69,4 +74,56 @@ export const getSelectedDate = () => {
 export const setSelectedDate = (date: Date) => {
     localStorage.setItem("SELECTED_MONTH", JSON.stringify(date.getMonth() + 1));
     localStorage.setItem("SELECTED_YEAR", JSON.stringify(date.getFullYear()));
+};
+
+export const fetchAppointments = async (): Promise<Appointment[]> => {
+    try {
+        const response = await fetch(
+            "https://altomobile.blob.core.windows.net/api/test.json"
+        );
+        if (!response.ok) {
+            throw new Error("Network error");
+        }
+        const data = await response.json();
+        return data.map(
+            (
+                appointment: { time: string; name: string },
+                index: number
+            ): Appointment => ({
+                id: String(index),
+                date: new Date(appointment.time),
+                name: appointment.name,
+            })
+        );
+    } catch (error) {
+        console.error("Error fetching appointments:", error);
+        return [];
+    }
+};
+
+export const syncAppointments = async () => {
+    const remoteAppointments = await fetchAppointments();
+    const localAppointments = getAppointments();
+
+    const indexesToCreate = remoteAppointments.reduce<number[]>(
+        (missingIndexes, remoteAppointment, index) => {
+            if (
+                !localAppointments.some(
+                    (localAppointment) =>
+                        localAppointment.id === remoteAppointment.id
+                )
+            ) {
+                missingIndexes.push(index);
+            }
+            return missingIndexes;
+        },
+        []
+    );
+
+    indexesToCreate.forEach((index) => {
+        const appointment = remoteAppointments[index];
+        createAppointment(appointment.date, appointment.name, appointment.id);
+    });
+
+    return getAppointments();
 };
